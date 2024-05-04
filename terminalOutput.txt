@@ -1,0 +1,358 @@
+[lion@roscoe project-group-16]$ psql PhaseV
+psql (16.1)
+Type "help" for help.
+
+PhaseV=# \i build_db.sql
+psql:build_db.sql:10: ERROR:  cannot drop table activity because other objects depend on it
+DETAIL:  view time_til_vax depends on table activity
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+psql:build_db.sql:11: ERROR:  cannot drop table trait because other objects depend on it
+DETAIL:  view weights depends on table trait
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+DROP TABLE
+psql:build_db.sql:13: ERROR:  cannot drop table events because other objects depend on it
+DETAIL:  constraint trait_trait_code_fkey on table trait depends on table events
+constraint activity_activity_code_fkey on table activity depends on table events
+view vaccines depends on table events
+view time_til_vax depends on view vaccines
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+psql:build_db.sql:14: ERROR:  cannot drop table animal because other objects depend on it
+DETAIL:  constraint trait_animal_id_fkey on table trait depends on table animal
+view ages depends on table animal
+view time_til_vax depends on table animal
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+psql:build_db.sql:40: ERROR:  relation "animal" already exists
+psql:build_db.sql:46: ERROR:  relation "events" already exists
+CREATE TABLE
+psql:build_db.sql:67: ERROR:  relation "trait" already exists
+psql:build_db.sql:76: ERROR:  relation "activity" already exists
+CREATE TABLE
+COPY 8382
+CREATE TABLE
+COPY 1019
+CREATE TABLE
+COPY 27925
+CREATE TABLE
+COPY 340367
+CREATE TABLE
+COPY 55120
+psql:build_db.sql:190: ERROR:  duplicate key value violates unique constraint "animal_pkey"
+DETAIL:  Key (animal_id)=(1876) already exists.
+psql:build_db.sql:194: ERROR:  duplicate key value violates unique constraint "events_pkey"
+DETAIL:  Key (picklistvalue_id)=(1) already exists.
+INSERT 0 27925
+psql:build_db.sql:202: ERROR:  duplicate key value violates unique constraint "trait_pkey"
+DETAIL:  Key (session_id, animal_id, trait_code, when_measured)=(7, 1888, 357, 2015-02-24 09:00:01) already exists.
+psql:build_db.sql:206: ERROR:  duplicate key value violates unique constraint "activity_pkey"
+DETAIL:  Key (session_id, animal_id, activity_code, when_measured)=(65, 3097, 708, 2015-06-19 07:12:52.653) already exists.
+DROP TABLE
+DROP TABLE
+DROP TABLE
+DROP TABLE
+DROP TABLE
+DROP VIEW
+CREATE VIEW
+psql:build_db.sql:222: ERROR:  cannot drop view vaccines because other objects depend on it
+DETAIL:  view time_til_vax depends on view vaccines
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+psql:build_db.sql:226: ERROR:  relation "vaccines" already exists
+DROP VIEW
+CREATE VIEW
+DROP VIEW
+CREATE VIEW
+PhaseV=# \i sample_queries.sql
+ picklistvalue_id |      value_txt       
+------------------+----------------------
+               49 | 5 in 1 Vacc
+              708 | CD AND T VACCINE
+              737 | Chlymidia/lepto/vibr
+              754 | DL
+              791 | PMHQ
+(5 rows)
+
+ animal_id |         dob         |      when_measured      | activity_code |      value_txt       | status_current | goat_age 
+-----------+---------------------+-------------------------+---------------+----------------------+----------------+----------
+      5191 | 2018-03-11 00:00:00 | 2018-09-13 19:15:45.052 |           737 | Chlymidia/lepto/vibr | Current        |        6
+      4222 | 2017-03-20 00:00:00 | 2018-09-28 08:28:04.164 |           737 | Chlymidia/lepto/vibr | Current        |        7
+      4244 | 2017-03-20 00:00:00 | 2018-09-28 08:41:10.483 |           737 | Chlymidia/lepto/vibr | Current        |        7
+      4081 | 2017-03-15 00:00:00 | 2018-09-28 08:45:36.565 |           737 | Chlymidia/lepto/vibr | Current        |        7
+      3974 | 2017-03-14 00:00:00 | 2018-09-28 08:46:51.487 |           737 | Chlymidia/lepto/vibr | Current        |        7
+      4122 | 2017-03-17 00:00:00 | 2018-09-28 09:04:30.896 |           737 | Chlymidia/lepto/vibr | Current        |        7
+      3951 | 2017-03-14 00:00:00 | 2018-09-28 09:06:20.689 |           737 | Chlymidia/lepto/vibr | Current        |        7
+(7 rows)
+
+ animal_id |         dob         | overall_adg |      when_measured      | activity_code |      value_txt       
+-----------+---------------------+-------------+-------------------------+---------------+----------------------
+      3794 | 2017-03-06 00:00:00 | 0.12        | 2017-09-20 08:52:47.564 |           737 | Chlymidia/lepto/vibr
+      4234 | 2017-03-18 00:00:00 | 0.14        | 2017-09-20 08:53:24.674 |           737 | Chlymidia/lepto/vibr
+      4209 | 2017-03-20 00:00:00 | 0.11        | 2017-09-20 08:54:22.745 |           737 | Chlymidia/lepto/vibr
+      3761 | 2017-02-22 00:00:00 | 0.11        | 2017-09-20 08:55:04.226 |           737 | Chlymidia/lepto/vibr
+      3758 | 2017-02-20 00:00:00 | 0.13        | 2017-09-20 08:55:27.688 |           737 | Chlymidia/lepto/vibr
+      4286 | 2017-03-23 00:00:00 | 0.13        | 2017-09-20 08:56:37.61  |           737 | Chlymidia/lepto/vibr
+      3755 | 2017-02-23 00:00:00 | 0.13        | 2017-09-20 08:57:35.515 |           737 | Chlymidia/lepto/vibr
+      4336 | 2017-03-24 00:00:00 | 0.13        | 2017-09-20 08:58:25.947 |           737 | Chlymidia/lepto/vibr
+      3795 | 2017-03-05 00:00:00 | 0.11        | 2017-09-20 08:59:20.922 |           737 | Chlymidia/lepto/vibr
+      4210 | 2017-03-20 00:00:00 | 0.12        | 2017-09-20 12:45:43.715 |           737 | Chlymidia/lepto/vibr
+      3755 | 2017-02-23 00:00:00 | 0.13        | 2018-09-13 18:46:31.377 |           737 | Chlymidia/lepto/vibr
+      4280 | 2017-03-23 00:00:00 | 0.13        | 2018-09-28 08:38:37.21  |           737 | Chlymidia/lepto/vibr
+      4219 | 2017-03-19 00:00:00 | 0.11        | 2018-09-28 13:41:08.261 |           737 | Chlymidia/lepto/vibr
+      4152 | 2017-03-18 00:00:00 | 0.11        | 2019-08-23 08:15:12.1   |           737 | Chlymidia/lepto/vibr
+      4091 | 2017-03-11 00:00:00 | 0.11        | 2019-08-23 09:14:32.066 |           737 | Chlymidia/lepto/vibr
+      3978 | 2017-03-14 00:00:00 | 0.11        | 2019-08-23 11:12:14.166 |           737 | Chlymidia/lepto/vibr
+      4135 | 2017-03-18 00:00:00 | 0.11        | 2019-08-23 13:23:41.691 |           737 | Chlymidia/lepto/vibr
+      4219 | 2017-03-19 00:00:00 | 0.11        | 2019-08-23 13:37:05.753 |           737 | Chlymidia/lepto/vibr
+      4069 | 2017-03-12 00:00:00 | 0.11        | 2019-08-24 08:14:15.396 |           737 | Chlymidia/lepto/vibr
+(19 rows)
+
+ animal_id | vax_time |      when_measured      | picklistvalue_id 
+-----------+----------+-------------------------+------------------
+      3760 |      211 | 2017-09-20 08:52:16.641 |              737
+      3760 |      569 | 2018-09-13 18:47:34.9   |              737
+      3760 |      920 | 2019-08-30 06:51:49.518 |              737
+(3 rows)
+
+ animal_id |         dob         | status_current |      when_measured      | activity_code |      value_txt       | vax_time 
+-----------+---------------------+----------------+-------------------------+---------------+----------------------+----------
+      3760 | 2017-02-21 00:00:00 | Dead           | 2017-09-20 08:52:16.641 |           737 | Chlymidia/lepto/vibr |      211
+      3794 | 2017-03-06 00:00:00 | Sold           | 2017-09-20 08:52:47.564 |           737 | Chlymidia/lepto/vibr |      198
+      4234 | 2017-03-18 00:00:00 | Sold           | 2017-09-20 08:53:24.674 |           737 | Chlymidia/lepto/vibr |      186
+      4016 | 2017-03-14 00:00:00 | Sold           | 2017-09-20 08:53:50.974 |           737 | Chlymidia/lepto/vibr |      190
+      4209 | 2017-03-20 00:00:00 | Sold           | 2017-09-20 08:54:22.745 |           737 | Chlymidia/lepto/vibr |      184
+      3761 | 2017-02-22 00:00:00 | Sold           | 2017-09-20 08:55:04.226 |           737 | Chlymidia/lepto/vibr |      210
+      3758 | 2017-02-20 00:00:00 | Sold           | 2017-09-20 08:55:27.688 |           737 | Chlymidia/lepto/vibr |      212
+      3990 | 2017-03-11 00:00:00 | Dead           | 2017-09-20 08:56:08.769 |           737 | Chlymidia/lepto/vibr |      193
+      4286 | 2017-03-23 00:00:00 | Sold           | 2017-09-20 08:56:37.61  |           737 | Chlymidia/lepto/vibr |      181
+      4382 | 2017-04-07 00:00:00 | Sold           | 2017-09-20 08:56:58.192 |           737 | Chlymidia/lepto/vibr |      166
+      3755 | 2017-02-23 00:00:00 | Sold           | 2017-09-20 08:57:35.515 |           737 | Chlymidia/lepto/vibr |      209
+      4336 | 2017-03-24 00:00:00 | Sold           | 2017-09-20 08:58:25.947 |           737 | Chlymidia/lepto/vibr |      180
+      3795 | 2017-03-05 00:00:00 | Sold           | 2017-09-20 08:59:20.922 |           737 | Chlymidia/lepto/vibr |      199
+      3762 | 2017-02-21 00:00:00 | Sold           | 2017-09-20 08:59:29.447 |           737 | Chlymidia/lepto/vibr |      211
+      4210 | 2017-03-20 00:00:00 | Sold           | 2017-09-20 12:45:43.715 |           737 | Chlymidia/lepto/vibr |      184
+      4382 | 2017-04-07 00:00:00 | Sold           | 2018-09-13 18:40:27.406 |           737 | Chlymidia/lepto/vibr |      524
+      3990 | 2017-03-11 00:00:00 | Dead           | 2018-09-13 18:42:01.983 |           737 | Chlymidia/lepto/vibr |      551
+      3762 | 2017-02-21 00:00:00 | Sold           | 2018-09-13 18:44:10.964 |           737 | Chlymidia/lepto/vibr |      569
+      4016 | 2017-03-14 00:00:00 | Sold           | 2018-09-13 18:45:25.787 |           737 | Chlymidia/lepto/vibr |      548
+      3755 | 2017-02-23 00:00:00 | Sold           | 2018-09-13 18:46:31.377 |           737 | Chlymidia/lepto/vibr |      567
+      3760 | 2017-02-21 00:00:00 | Dead           | 2018-09-13 18:47:34.9   |           737 | Chlymidia/lepto/vibr |      569
+      4222 | 2017-03-20 00:00:00 | Current        | 2018-09-28 08:28:04.164 |           737 | Chlymidia/lepto/vibr |      557
+      4280 | 2017-03-23 00:00:00 | Sold           | 2018-09-28 08:38:37.21  |           737 | Chlymidia/lepto/vibr |      554
+      4244 | 2017-03-20 00:00:00 | Current        | 2018-09-28 08:41:10.483 |           737 | Chlymidia/lepto/vibr |      557
+      4046 | 2017-03-16 00:00:00 | Sold           | 2018-09-28 08:44:17.337 |           737 | Chlymidia/lepto/vibr |      561
+      4081 | 2017-03-15 00:00:00 | Current        | 2018-09-28 08:45:36.565 |           737 | Chlymidia/lepto/vibr |      562
+      3974 | 2017-03-14 00:00:00 | Current        | 2018-09-28 08:46:51.487 |           737 | Chlymidia/lepto/vibr |      563
+      4122 | 2017-03-17 00:00:00 | Current        | 2018-09-28 09:04:30.896 |           737 | Chlymidia/lepto/vibr |      560
+      3951 | 2017-03-14 00:00:00 | Current        | 2018-09-28 09:06:20.689 |           737 | Chlymidia/lepto/vibr |      563
+      4219 | 2017-03-19 00:00:00 | Sold           | 2018-09-28 13:41:08.261 |           737 | Chlymidia/lepto/vibr |      558
+      4076 | 2017-03-16 00:00:00 | Current        | 2019-08-23 07:59:40.526 |           737 | Chlymidia/lepto/vibr |      890
+      3864 | 2017-03-10 00:00:00 | Sold           | 2019-08-23 08:06:35.127 |           737 | Chlymidia/lepto/vibr |      896
+      3872 | 2017-03-09 00:00:00 | Sold           | 2019-08-23 08:07:49.498 |           737 | Chlymidia/lepto/vibr |      897
+      4013 | 2017-03-15 00:00:00 | Dead           | 2019-08-23 08:08:12.9   |           737 | Chlymidia/lepto/vibr |      891
+      4229 | 2017-03-19 00:00:00 | Sold           | 2019-08-23 08:08:51.728 |           737 | Chlymidia/lepto/vibr |      887
+      4222 | 2017-03-20 00:00:00 | Current        | 2019-08-23 08:09:43.942 |           737 | Chlymidia/lepto/vibr |      886
+      4202 | 2017-03-18 00:00:00 | Sold           | 2019-08-23 08:14:35.807 |           737 | Chlymidia/lepto/vibr |      888
+      4152 | 2017-03-18 00:00:00 | Sold           | 2019-08-23 08:15:12.1   |           737 | Chlymidia/lepto/vibr |      888
+      3870 | 2017-03-10 00:00:00 | Current        | 2019-08-23 08:17:22.593 |           737 | Chlymidia/lepto/vibr |      896
+      3928 | 2017-03-14 00:00:00 | Current        | 2019-08-23 08:21:14.504 |           737 | Chlymidia/lepto/vibr |      892
+      3759 | 2017-02-21 00:00:00 | Current        | 2019-08-23 08:22:21.349 |           737 | Chlymidia/lepto/vibr |      913
+      3757 | 2017-02-20 00:00:00 | Current        | 2019-08-23 08:22:45.831 |           737 | Chlymidia/lepto/vibr |      914
+      3772 | 2017-03-01 00:00:00 | Current        | 2019-08-23 08:24:58.511 |           737 | Chlymidia/lepto/vibr |      905
+      4171 | 2017-03-18 00:00:00 | Current        | 2019-08-23 08:25:25.168 |           737 | Chlymidia/lepto/vibr |      888
+      3791 | 2017-03-03 00:00:00 | Sold           | 2019-08-23 08:25:50.756 |           737 | Chlymidia/lepto/vibr |      903
+      3890 | 2017-03-11 00:00:00 | Current        | 2019-08-23 08:27:19.023 |           737 | Chlymidia/lepto/vibr |      895
+      3869 | 2017-03-08 00:00:00 | Current        | 2019-08-23 08:29:15.837 |           737 | Chlymidia/lepto/vibr |      898
+      4046 | 2017-03-16 00:00:00 | Sold           | 2019-08-23 08:29:59.702 |           737 | Chlymidia/lepto/vibr |      890
+      4307 | 2017-03-22 00:00:00 | Dead           | 2019-08-23 08:31:00.327 |           737 | Chlymidia/lepto/vibr |      884
+      4306 | 2017-03-23 00:00:00 | Dead           | 2019-08-23 08:31:21.418 |           737 | Chlymidia/lepto/vibr |      883
+      3842 | 2017-03-08 00:00:00 | Current        | 2019-08-23 08:32:33.685 |           737 | Chlymidia/lepto/vibr |      898
+      3891 | 2017-03-11 00:00:00 | Sold           | 2019-08-23 08:34:58.4   |           737 | Chlymidia/lepto/vibr |      895
+      3880 | 2017-03-10 00:00:00 | Sold           | 2019-08-23 08:38:03.32  |           737 | Chlymidia/lepto/vibr |      896
+      3840 | 2017-03-08 00:00:00 | Current        | 2019-08-23 08:40:40.461 |           737 | Chlymidia/lepto/vibr |      898
+      4123 | 2017-03-16 00:00:00 | Sold           | 2019-08-23 08:42:21.283 |           737 | Chlymidia/lepto/vibr |      890
+      4278 | 2017-03-22 00:00:00 | Sold           | 2019-08-23 08:52:46.094 |           737 | Chlymidia/lepto/vibr |      884
+      4075 | 2017-03-16 00:00:00 | Current        | 2019-08-23 08:53:10.814 |           737 | Chlymidia/lepto/vibr |      890
+      4178 | 2017-03-17 00:00:00 | Current        | 2019-08-23 08:53:36.88  |           737 | Chlymidia/lepto/vibr |      889
+      4068 | 2017-03-16 00:00:00 | Current        | 2019-08-23 08:53:58.839 |           737 | Chlymidia/lepto/vibr |      890
+      3803 | 2017-03-06 00:00:00 | Dead           | 2019-08-23 09:00:58.611 |           737 | Chlymidia/lepto/vibr |      900
+      4261 | 2017-03-21 00:00:00 | Current        | 2019-08-23 09:02:59.441 |           737 | Chlymidia/lepto/vibr |      885
+      4240 | 2017-03-21 00:00:00 | Sold           | 2019-08-23 09:12:53.088 |           737 | Chlymidia/lepto/vibr |      885
+      4025 | 2017-03-15 00:00:00 | Current        | 2019-08-23 09:13:33.432 |           737 | Chlymidia/lepto/vibr |      891
+      4091 | 2017-03-11 00:00:00 | Sold           | 2019-08-23 09:14:32.066 |           737 | Chlymidia/lepto/vibr |      895
+      4180 | 2017-03-19 00:00:00 | Sold           | 2019-08-23 09:15:46.015 |           737 | Chlymidia/lepto/vibr |      887
+      3998 | 2017-03-15 00:00:00 | Current        | 2019-08-23 09:17:12.204 |           737 | Chlymidia/lepto/vibr |      891
+      4252 | 2017-03-21 00:00:00 | Current        | 2019-08-23 09:21:48.165 |           737 | Chlymidia/lepto/vibr |      885
+      3771 | 2017-03-01 00:00:00 | Sold           | 2019-08-23 09:22:22.017 |           737 | Chlymidia/lepto/vibr |      905
+      3975 | 2017-03-14 00:00:00 | Current        | 2019-08-23 09:24:22.566 |           737 | Chlymidia/lepto/vibr |      892
+      4060 | 2017-03-15 00:00:00 | Sold           | 2019-08-23 09:26:04.224 |           737 | Chlymidia/lepto/vibr |      891
+      3790 | 2017-03-03 00:00:00 | Sold           | 2019-08-23 09:27:54.409 |           737 | Chlymidia/lepto/vibr |      903
+      4413 | 2017-04-10 00:00:00 | Sold           | 2019-08-23 09:28:17.946 |           737 | Chlymidia/lepto/vibr |      865
+      3963 | 2017-03-13 00:00:00 | Current        | 2019-08-23 09:28:55.301 |           737 | Chlymidia/lepto/vibr |      893
+      3951 | 2017-03-14 00:00:00 | Current        | 2019-08-23 09:30:36.754 |           737 | Chlymidia/lepto/vibr |      892
+      3816 | 2017-03-07 00:00:00 | Current        | 2019-08-23 09:37:42.495 |           737 | Chlymidia/lepto/vibr |      899
+      4177 | 2017-03-17 00:00:00 | Sold           | 2019-08-23 09:38:09.644 |           737 | Chlymidia/lepto/vibr |      889
+      4034 | 2017-03-15 00:00:00 | Current        | 2019-08-23 09:38:33.06  |           737 | Chlymidia/lepto/vibr |      891
+      4054 | 2017-03-14 00:00:00 | Current        | 2019-08-23 09:45:17.675 |           737 | Chlymidia/lepto/vibr |      892
+      4081 | 2017-03-15 00:00:00 | Current        | 2019-08-23 09:46:31.624 |           737 | Chlymidia/lepto/vibr |      891
+      3973 | 2017-03-14 00:00:00 | Current        | 2019-08-23 09:50:24.752 |           737 | Chlymidia/lepto/vibr |      892
+      4318 | 2017-03-22 00:00:00 | Current        | 2019-08-23 09:56:12.824 |           737 | Chlymidia/lepto/vibr |      884
+      4253 | 2017-03-21 00:00:00 | Dead           | 2019-08-23 09:58:19.865 |           737 | Chlymidia/lepto/vibr |      885
+      3984 | 2017-03-14 00:00:00 | Dead           | 2019-08-23 10:03:43.706 |           737 | Chlymidia/lepto/vibr |      892
+      4248 | 2017-03-21 00:00:00 | Sold           | 2019-08-23 10:11:34.427 |           737 | Chlymidia/lepto/vibr |      885
+      4195 | 2017-03-19 00:00:00 | Current        | 2019-08-23 10:13:02.874 |           737 | Chlymidia/lepto/vibr |      887
+      4184 | 2017-03-19 00:00:00 | Sold           | 2019-08-23 10:14:04.965 |           737 | Chlymidia/lepto/vibr |      887
+      4244 | 2017-03-20 00:00:00 | Current        | 2019-08-23 10:16:15.181 |           737 | Chlymidia/lepto/vibr |      886
+      3817 | 2017-03-08 00:00:00 | Current        | 2019-08-23 10:17:50.385 |           737 | Chlymidia/lepto/vibr |      898
+      3774 | 2017-02-28 00:00:00 | Current        | 2019-08-23 10:18:26.366 |           737 | Chlymidia/lepto/vibr |      906
+      4188 | 2017-03-17 00:00:00 | Sold           | 2019-08-23 10:18:56.054 |           737 | Chlymidia/lepto/vibr |      889
+      3862 | 2017-03-10 00:00:00 | Current        | 2019-08-23 10:19:20.534 |           737 | Chlymidia/lepto/vibr |      896
+      4109 | 2017-03-17 00:00:00 | Sold           | 2019-08-23 10:19:54.945 |           737 | Chlymidia/lepto/vibr |      889
+      3983 | 2017-03-14 00:00:00 | Current        | 2019-08-23 10:22:28.738 |           737 | Chlymidia/lepto/vibr |      892
+      4406 | 2017-04-07 00:00:00 | Current        | 2019-08-23 10:23:05.255 |           737 | Chlymidia/lepto/vibr |      868
+      4268 | 2017-03-21 00:00:00 | Current        | 2019-08-23 10:24:44.661 |           737 | Chlymidia/lepto/vibr |      885
+      3987 | 2017-03-12 00:00:00 | Current        | 2019-08-23 10:25:13.263 |           737 | Chlymidia/lepto/vibr |      894
+      4302 | 2017-03-23 00:00:00 | Current        | 2019-08-23 10:27:24.986 |           737 | Chlymidia/lepto/vibr |      883
+      4048 | 2017-03-16 00:00:00 | Sold           | 2019-08-23 10:27:59.089 |           737 | Chlymidia/lepto/vibr |      890
+      3996 | 2017-03-15 00:00:00 | Current        | 2019-08-23 10:28:40.072 |           737 | Chlymidia/lepto/vibr |      891
+      4176 | 2017-03-18 00:00:00 | Sold           | 2019-08-23 10:35:02.464 |           737 | Chlymidia/lepto/vibr |      888
+      4230 | 2017-03-19 00:00:00 | Current        | 2019-08-23 10:35:29.805 |           737 | Chlymidia/lepto/vibr |      887
+      3939 | 2017-03-13 00:00:00 | Sold           | 2019-08-23 10:47:30.81  |           737 | Chlymidia/lepto/vibr |      893
+      3906 | 2017-03-12 00:00:00 | Current        | 2019-08-23 11:03:54.515 |           737 | Chlymidia/lepto/vibr |      894
+      3821 | 2017-03-08 00:00:00 | Dead           | 2019-08-23 11:05:36.229 |           737 | Chlymidia/lepto/vibr |      898
+      3768 | 2017-03-02 00:00:00 | Sold           | 2019-08-23 11:06:09.383 |           737 | Chlymidia/lepto/vibr |      904
+      4370 | 2017-04-06 00:00:00 | Sold           | 2019-08-23 11:08:42.082 |           737 | Chlymidia/lepto/vibr |      869
+      3827 | 2017-03-07 00:00:00 | Sold           | 2019-08-23 11:09:07.052 |           737 | Chlymidia/lepto/vibr |      899
+      4215 | 2017-03-20 00:00:00 | Current        | 2019-08-23 11:09:35.797 |           737 | Chlymidia/lepto/vibr |      886
+      3934 | 2017-03-13 00:00:00 | Dead           | 2019-08-23 11:10:00.216 |           737 | Chlymidia/lepto/vibr |      893
+      3820 | 2017-03-08 00:00:00 | Current        | 2019-08-23 11:11:45.966 |           737 | Chlymidia/lepto/vibr |      898
+      3978 | 2017-03-14 00:00:00 | Sold           | 2019-08-23 11:12:14.166 |           737 | Chlymidia/lepto/vibr |      892
+      4308 | 2017-03-22 00:00:00 | Current        | 2019-08-23 11:16:18.171 |           737 | Chlymidia/lepto/vibr |      884
+      3904 | 2017-03-12 00:00:00 | Current        | 2019-08-23 11:17:48.221 |           737 | Chlymidia/lepto/vibr |      894
+      3903 | 2017-03-12 00:00:00 | Dead           | 2019-08-23 11:18:31.01  |           737 | Chlymidia/lepto/vibr |      894
+      4107 | 2017-03-17 00:00:00 | Current        | 2019-08-23 11:42:18.662 |           737 | Chlymidia/lepto/vibr |      889
+      4285 | 2017-03-23 00:00:00 | Current        | 2019-08-23 11:49:09.505 |           737 | Chlymidia/lepto/vibr |      883
+      4122 | 2017-03-17 00:00:00 | Current        | 2019-08-23 11:49:40.121 |           737 | Chlymidia/lepto/vibr |      889
+      4427 | 2017-04-10 00:00:00 | Dead           | 2019-08-23 11:55:02.97  |           737 | Chlymidia/lepto/vibr |      865
+      3977 | 2017-03-14 00:00:00 | Dead           | 2019-08-23 11:55:37.378 |           737 | Chlymidia/lepto/vibr |      892
+      4359 | 2017-04-04 00:00:00 | Dead           | 2019-08-23 11:59:42.813 |           737 | Chlymidia/lepto/vibr |      871
+      4111 | 2017-03-17 00:00:00 | Sold           | 2019-08-23 12:00:13.686 |           737 | Chlymidia/lepto/vibr |      889
+      3993 | 2017-03-14 00:00:00 | Sold           | 2019-08-23 12:01:16.206 |           737 | Chlymidia/lepto/vibr |      892
+      4097 | 2017-03-17 00:00:00 | Sold           | 2019-08-23 12:03:44.246 |           737 | Chlymidia/lepto/vibr |      889
+      3798 | 2017-03-05 00:00:00 | Current        | 2019-08-23 12:06:31.22  |           737 | Chlymidia/lepto/vibr |      901
+      4257 | 2017-03-21 00:00:00 | Current        | 2019-08-23 12:09:30.064 |           737 | Chlymidia/lepto/vibr |      885
+      4213 | 2017-03-20 00:00:00 | Current        | 2019-08-23 12:15:02.1   |           737 | Chlymidia/lepto/vibr |      886
+      4255 | 2017-03-21 00:00:00 | Sold           | 2019-08-23 12:15:44.707 |           737 | Chlymidia/lepto/vibr |      885
+      4304 | 2017-03-22 00:00:00 | Current        | 2019-08-23 12:17:14.751 |           737 | Chlymidia/lepto/vibr |      884
+      3894 | 2017-03-11 00:00:00 | Current        | 2019-08-23 12:21:14.401 |           737 | Chlymidia/lepto/vibr |      895
+      4102 | 2017-03-17 00:00:00 | Current        | 2019-08-23 12:23:56.279 |           737 | Chlymidia/lepto/vibr |      889
+      3974 | 2017-03-14 00:00:00 | Current        | 2019-08-23 12:24:26.865 |           737 | Chlymidia/lepto/vibr |      892
+      4220 | 2017-03-19 00:00:00 | Current        | 2019-08-23 12:31:26.755 |           737 | Chlymidia/lepto/vibr |      887
+      3819 | 2017-03-08 00:00:00 | Current        | 2019-08-23 12:34:28.772 |           737 | Chlymidia/lepto/vibr |      898
+      3882 | 2017-03-10 00:00:00 | Current        | 2019-08-23 12:35:28.166 |           737 | Chlymidia/lepto/vibr |      896
+      3916 | 2017-03-11 00:00:00 | Current        | 2019-08-23 12:38:40.591 |           737 | Chlymidia/lepto/vibr |      895
+      4325 | 2017-03-24 00:00:00 | Sold           | 2019-08-23 12:45:27.732 |           737 | Chlymidia/lepto/vibr |      882
+      4012 | 2017-03-14 00:00:00 | Sold           | 2019-08-23 12:47:26.286 |           737 | Chlymidia/lepto/vibr |      892
+      4083 | 2017-03-16 00:00:00 | Current        | 2019-08-23 12:49:38.584 |           737 | Chlymidia/lepto/vibr |      890
+      4015 | 2017-03-15 00:00:00 | Sold           | 2019-08-23 12:51:02.839 |           737 | Chlymidia/lepto/vibr |      891
+      4022 | 2017-03-14 00:00:00 | Sold           | 2019-08-23 12:53:09.095 |           737 | Chlymidia/lepto/vibr |      892
+      4387 | 2017-04-08 00:00:00 | Current        | 2019-08-23 12:53:41.982 |           737 | Chlymidia/lepto/vibr |      867
+      4181 | 2017-03-18 00:00:00 | Current        | 2019-08-23 12:54:11.059 |           737 | Chlymidia/lepto/vibr |      888
+      3756 | 2017-02-23 00:00:00 | Dead           | 2019-08-23 13:10:10.617 |           737 | Chlymidia/lepto/vibr |      911
+      3873 | 2017-03-09 00:00:00 | Sold           | 2019-08-23 13:14:28.154 |           737 | Chlymidia/lepto/vibr |      897
+      4071 | 2017-03-16 00:00:00 | Sold           | 2019-08-23 13:21:23.462 |           737 | Chlymidia/lepto/vibr |      890
+      4172 | 2017-03-18 00:00:00 | Current        | 2019-08-23 13:22:25.322 |           737 | Chlymidia/lepto/vibr |      888
+      4317 | 2017-03-22 00:00:00 | Sold           | 2019-08-23 13:22:55.041 |           737 | Chlymidia/lepto/vibr |      884
+      4135 | 2017-03-18 00:00:00 | Dead           | 2019-08-23 13:23:41.691 |           737 | Chlymidia/lepto/vibr |      888
+      3825 | 2017-03-08 00:00:00 | Current        | 2019-08-23 13:24:53.533 |           737 | Chlymidia/lepto/vibr |      898
+      4233 | 2017-03-18 00:00:00 | Current        | 2019-08-23 13:30:11.625 |           737 | Chlymidia/lepto/vibr |      888
+      4353 | 2017-04-04 00:00:00 | Sold           | 2019-08-23 13:31:52.143 |           737 | Chlymidia/lepto/vibr |      871
+      3936 | 2017-03-14 00:00:00 | Dead           | 2019-08-23 13:33:04.798 |           737 | Chlymidia/lepto/vibr |      892
+      4224 | 2017-03-20 00:00:00 | Sold           | 2019-08-23 13:34:40.302 |           737 | Chlymidia/lepto/vibr |      886
+      4057 | 2017-03-16 00:00:00 | Dead           | 2019-08-23 13:35:19.021 |           737 | Chlymidia/lepto/vibr |      890
+      4219 | 2017-03-19 00:00:00 | Sold           | 2019-08-23 13:37:05.753 |           737 | Chlymidia/lepto/vibr |      887
+      3855 | 2017-03-09 00:00:00 | Current        | 2019-08-23 13:41:18.473 |           737 | Chlymidia/lepto/vibr |      897
+      4324 | 2017-03-24 00:00:00 | Sold           | 2019-08-23 13:41:55.832 |           737 | Chlymidia/lepto/vibr |      882
+      4326 | 2017-03-24 00:00:00 | Dead           | 2019-08-23 13:44:13.193 |           737 | Chlymidia/lepto/vibr |      882
+      3964 | 2017-03-14 00:00:00 | Sold           | 2019-08-23 13:44:53.625 |           737 | Chlymidia/lepto/vibr |      892
+      4039 | 2017-03-16 00:00:00 | Current        | 2019-08-23 13:57:06.937 |           737 | Chlymidia/lepto/vibr |      890
+      4311 | 2017-03-22 00:00:00 | Current        | 2019-08-23 14:11:45.301 |           737 | Chlymidia/lepto/vibr |      884
+      3865 | 2017-03-10 00:00:00 | Current        | 2019-08-23 14:27:35.648 |           737 | Chlymidia/lepto/vibr |      896
+      4065 | 2017-03-16 00:00:00 | Sold           | 2019-08-23 14:34:40.892 |           737 | Chlymidia/lepto/vibr |      890
+      3788 | 2017-03-05 00:00:00 | Sold           | 2019-08-23 14:36:03.232 |           737 | Chlymidia/lepto/vibr |      901
+      4277 | 2017-03-23 00:00:00 | Current        | 2019-08-23 14:36:33.501 |           737 | Chlymidia/lepto/vibr |      883
+      3989 | 2017-03-12 00:00:00 | Dead           | 2019-08-23 14:39:26.787 |           737 | Chlymidia/lepto/vibr |      894
+      4161 | 2017-03-18 00:00:00 | Current        | 2019-08-23 14:43:53.824 |           737 | Chlymidia/lepto/vibr |      888
+      4156 | 2017-03-17 00:00:00 | Sold           | 2019-08-23 14:44:33.537 |           737 | Chlymidia/lepto/vibr |      889
+      3940 | 2017-03-13 00:00:00 | Sold           | 2019-08-23 14:51:31.56  |           737 | Chlymidia/lepto/vibr |      893
+      4256 | 2017-03-21 00:00:00 | Sold           | 2019-08-23 14:52:16.848 |           737 | Chlymidia/lepto/vibr |      885
+      4242 | 2017-03-21 00:00:00 | Current        | 2019-08-23 14:52:58.481 |           737 | Chlymidia/lepto/vibr |      885
+      4032 | 2017-03-17 00:00:00 | Dead           | 2019-08-23 14:53:26.228 |           737 | Chlymidia/lepto/vibr |      889
+      3982 | 2017-03-14 00:00:00 | Current        | 2019-08-23 14:54:25.826 |           737 | Chlymidia/lepto/vibr |      892
+      4067 | 2017-03-16 00:00:00 | Current        | 2019-08-23 14:55:13.606 |           737 | Chlymidia/lepto/vibr |      890
+      3972 | 2017-03-15 00:00:00 | Current        | 2019-08-23 14:56:29.925 |           737 | Chlymidia/lepto/vibr |      891
+      3925 | 2017-03-12 00:00:00 | Current        | 2019-08-23 14:57:26.327 |           737 | Chlymidia/lepto/vibr |      894
+      4101 | 2017-03-17 00:00:00 | Sold           | 2019-08-23 14:57:52.046 |           737 | Chlymidia/lepto/vibr |      889
+      4096 | 2017-03-17 00:00:00 | Current        | 2019-08-23 14:59:58.944 |           737 | Chlymidia/lepto/vibr |      889
+      4385 | 2017-04-07 00:00:00 | Current        | 2019-08-23 15:02:41.627 |           737 | Chlymidia/lepto/vibr |      868
+      4033 | 2017-03-15 00:00:00 | Sold           | 2019-08-23 15:04:33.531 |           737 | Chlymidia/lepto/vibr |      891
+      4433 | 2017-04-10 00:00:00 | Dead           | 2019-08-23 15:06:02.943 |           737 | Chlymidia/lepto/vibr |      865
+      3953 | 2017-03-14 00:00:00 | Current        | 2019-08-23 15:08:08.485 |           737 | Chlymidia/lepto/vibr |      892
+      4031 | 2017-03-17 00:00:00 | Current        | 2019-08-23 15:08:42.306 |           737 | Chlymidia/lepto/vibr |      889
+      3994 | 2017-03-14 00:00:00 | Current        | 2019-08-23 15:09:23.197 |           737 | Chlymidia/lepto/vibr |      892
+      3812 | 2017-03-07 00:00:00 | Dead           | 2019-08-23 15:11:51.47  |           737 | Chlymidia/lepto/vibr |      899
+      4368 | 2017-04-05 00:00:00 | Sold           | 2019-08-24 07:40:58.028 |           737 | Chlymidia/lepto/vibr |      871
+      4440 | 2017-04-09 00:00:00 | Sold           | 2019-08-24 07:46:03.079 |           737 | Chlymidia/lepto/vibr |      867
+      4069 | 2017-03-12 00:00:00 | Sold           | 2019-08-24 08:14:15.396 |           737 | Chlymidia/lepto/vibr |      895
+      4378 | 2017-04-09 00:00:00 | Sold           | 2019-08-24 08:17:53.208 |           737 | Chlymidia/lepto/vibr |      867
+      3763 | 2017-02-24 00:00:00 | Sold           | 2019-08-24 08:21:30.132 |           737 | Chlymidia/lepto/vibr |      911
+      4304 | 2017-03-22 00:00:00 | Current        | 2019-08-24 08:34:48.243 |           737 | Chlymidia/lepto/vibr |      885
+      4096 | 2017-03-17 00:00:00 | Current        | 2019-08-24 08:47:48.105 |           737 | Chlymidia/lepto/vibr |      890
+      4062 | 2017-03-16 00:00:00 | Current        | 2019-08-24 08:48:36.581 |           737 | Chlymidia/lepto/vibr |      891
+      3916 | 2017-03-11 00:00:00 | Current        | 2019-08-24 08:52:10.556 |           737 | Chlymidia/lepto/vibr |      896
+      4184 | 2017-03-19 00:00:00 | Sold           | 2019-08-24 09:56:11.813 |           737 | Chlymidia/lepto/vibr |      888
+      4025 | 2017-03-15 00:00:00 | Current        | 2019-08-24 10:11:18.729 |           737 | Chlymidia/lepto/vibr |      892
+      3762 | 2017-02-21 00:00:00 | Sold           | 2019-08-30 06:46:29.727 |           737 | Chlymidia/lepto/vibr |      920
+      4016 | 2017-03-14 00:00:00 | Sold           | 2019-08-30 06:47:20.122 |           737 | Chlymidia/lepto/vibr |      899
+      4382 | 2017-04-07 00:00:00 | Sold           | 2019-08-30 06:51:35.074 |           737 | Chlymidia/lepto/vibr |      875
+      3760 | 2017-02-21 00:00:00 | Dead           | 2019-08-30 06:51:49.518 |           737 | Chlymidia/lepto/vibr |      920
+      3990 | 2017-03-11 00:00:00 | Dead           | 2019-08-30 06:56:30.197 |           737 | Chlymidia/lepto/vibr |      902
+(201 rows)
+
+ animal_id | status_current | overall_adg |      value_txt       | vax_time 
+-----------+----------------+-------------+----------------------+----------
+      3794 | Sold           | 0.12        | Chlymidia/lepto/vibr |      198
+      4234 | Sold           | 0.14        | Chlymidia/lepto/vibr |      186
+      4209 | Sold           | 0.11        | Chlymidia/lepto/vibr |      184
+      3761 | Sold           | 0.11        | Chlymidia/lepto/vibr |      210
+      3758 | Sold           | 0.13        | Chlymidia/lepto/vibr |      212
+      4286 | Sold           | 0.13        | Chlymidia/lepto/vibr |      181
+      3755 | Sold           | 0.13        | Chlymidia/lepto/vibr |      209
+      4336 | Sold           | 0.13        | Chlymidia/lepto/vibr |      180
+      3795 | Sold           | 0.11        | Chlymidia/lepto/vibr |      199
+      4210 | Sold           | 0.12        | Chlymidia/lepto/vibr |      184
+      3755 | Sold           | 0.13        | Chlymidia/lepto/vibr |      567
+      4280 | Sold           | 0.13        | Chlymidia/lepto/vibr |      554
+      4219 | Sold           | 0.11        | Chlymidia/lepto/vibr |      558
+      4152 | Sold           | 0.11        | Chlymidia/lepto/vibr |      888
+      4091 | Sold           | 0.11        | Chlymidia/lepto/vibr |      895
+      3978 | Sold           | 0.11        | Chlymidia/lepto/vibr |      892
+      4135 | Dead           | 0.11        | Chlymidia/lepto/vibr |      888
+      4219 | Sold           | 0.11        | Chlymidia/lepto/vibr |      887
+      4069 | Sold           | 0.11        | Chlymidia/lepto/vibr |      895
+(19 rows)
+
+ animal_id | status_current | overall_adg |  value_txt  | vax_time 
+-----------+----------------+-------------+-------------+----------
+      3794 | Sold           | 0.12        | 5 in 1 Vacc |      198
+      4234 | Sold           | 0.14        | 5 in 1 Vacc |      186
+      4209 | Sold           | 0.11        | 5 in 1 Vacc |      184
+      3761 | Sold           | 0.11        | 5 in 1 Vacc |      210
+      3758 | Sold           | 0.13        | 5 in 1 Vacc |      212
+      4286 | Sold           | 0.13        | 5 in 1 Vacc |      181
+      3755 | Sold           | 0.13        | 5 in 1 Vacc |      209
+      4336 | Sold           | 0.13        | 5 in 1 Vacc |      180
+      3795 | Sold           | 0.11        | 5 in 1 Vacc |      199
+      4210 | Sold           | 0.12        | 5 in 1 Vacc |      184
+      3978 | Sold           | 0.11        | 5 in 1 Vacc |     1627
+(11 rows)
+
+PhaseV=# \q
+[lion@roscoe project-group-16]$ 

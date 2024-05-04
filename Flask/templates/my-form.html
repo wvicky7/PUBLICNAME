@@ -1,0 +1,147 @@
+<!-- /templates/my-form.html-->
+<!DOCTYPE html>
+
+<html lang="en">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css')}}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+  <title>Growth Curve Generator - Project Group 16</title>
+</head>
+
+<body>
+  
+  <header>
+    <div id="top_title">
+      <h3>Growth Curve Generator - Project Group 16</h3>
+    </div>
+  </header>
+
+  <main>
+    
+    <h4>Generate Growth Curve for Breed Group</h4>
+    <form action="/breedgroup-handler" method="POST">
+      <div>
+        <!-- <p>Please select a desired breed group to view.</p> -->
+  
+        <p>
+          <label for="group">Group:</label>
+  
+          <select name="breed_group" id="breed_group">
+            <option value="'1st BRD GRP'">1st BRD GRP</option>
+            <option value="'2nd BRD GRP'">2nd BRD GRP</option>
+            <option value="'3rd BRD GRP'">3rd BRD GRP</option>
+            <option value="'4th BRD GRP'">4th BRD GRP</option>
+            <option value="'5th BRD GRP'">5th BRD GRP</option>
+            <option value="'6th BRD GRP'">6th BRD GRP</option>
+            <option value="'7th BRD GRP'">7th BRD GRP</option>
+            <option value="'8th BRD GRP'">8th BRD GRP</option>
+            <option value="'9th BRD GRP'">9th BRD GRP</option>
+            <option value="'10th BRD GRP'">10th BRD GRP</option>
+            <option value="'11th BRD GRP'">11th BRD GRP</option>
+            <option value="'12th BRD GRP'">12th BRD GRP</option>
+            <option value="'13th BRD GRP'">13th BRD GRP</option>
+            <option value="'14th BRD GRP'">14th BRD GRP</option>
+            <option value="'15th BRD GRP'">15th BRD GRP</option>
+            <option value="'16th BRD GRP'">16th BRD GRP</option>
+            <option value="'17th BRD GRP'">17th BRD GRP</option>
+            <option value="'18th BRD GRP'">18th BRD GRP</option>
+            <option value="'19th BRD GRP'">19th BRD GRP</option>
+            <option value="'20th BRD GRP'">20th BRD GRP</option>
+            <option value="'21st BRD GRP'">21st BRD GRP</option>
+            <option value="'22nd BRD GRP'">22nd BRD GRP</option>
+            <option value="'23rd BRD GRP'">23rd BRD GRP</option>
+            <option value="'AI 2018'">AI 2018</option>
+            <option value="'AI 2019'">AI 2019</option>
+            <option value="'AI 2021'">AI 2021</option>
+            <option value="'Bottle Babies'">Bottle Babies</option>
+            <option value="'SPOTTIES'">SPOTTIES</option>
+            <option value="ALL(select A.animal_group from Animal)">All Groups</option>
+          </select>
+        </p>
+      </div>
+      <p>
+        <input type="submit" value="Generate">
+      </p>
+    </form>
+  
+    <h4>Generate Vaccination Time vs. Overall ADG Graph</h4>
+    <form action="/query-handler" method="POST">
+      <div>
+        <!-- <p>
+          Please select a range of DOBs to view.
+          <br>
+        </p> -->
+        <p>
+          <label for="start_date">Start Date:</label>
+          <input type="date" id="start_date" name="start_date">
+  
+          <label for="end_date">End Date:</label>
+          <input type="date" id="end_date" name="end_date">
+        </p>
+        <div class="alert" id="warning_message">
+          <strong>Warning!</strong> You have entered an end date that is prior to the start date.
+        </div>
+  
+        <!-- <p>
+          Choose a vaccine.
+        </p> -->
+        <p>
+          <label for="vaccines">Vaccine:</label>
+  
+          <select name="vaccine" id="vaccine">
+            <option value="49">5 in 1 Vacc</option>
+            <option value="708">CD AND T VACCINE</option>
+            <option value="737">Chlamydia/lepto/vibr</option>
+            <option value="754">DL</option>
+            <option value="791">PMHQ</option>
+            <option value="796">PMHQ INTRANASAL</option>
+            <option value="1104">CD and T Booster</option>
+            <option value="1111">Chlamydia</option>
+            <option value="1203">CD and T</option>
+            <option value="1215">PMHQ IN</option>
+            <option value="2144">VL5/Somnus</option>
+            <option value="2147">CDT with Somnus</option>
+            <option value="ALL(select T.picklistvalue_id from time_til_vax)">All Vaccines</option>
+          </select>
+        </p>
+        <p>
+          <input type="submit" value="Generate">
+        </p>
+      </div>
+    </form>
+  
+  </main>
+
+  <footer>
+    <div id="top_title">
+      <h4>by Angelica Froio, Amaan Gadatia and Vicky Weng</h4>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("warning_message").style.display = "none";
+
+    function showAlert() {
+      var start_date = document.getElementById("start_date").value;
+      var end_date = document.getElementById("end_date").value;
+
+      if (start_date > end_date) {
+        document.getElementById("warning_message").style.display = "block";
+      }
+      
+      else {
+        document.getElementById("warning_message").style.display = "none";
+        document.getElementById("empty_message").style.display = "block";
+      }
+    }
+
+    document.getElementById("end_date").addEventListener("input", showAlert);
+    document.getElementById("start_date").addEventListener("input", showAlert);
+  </script>
+</body>
+
+<!-- minimal styling -->
+  
+</html>
